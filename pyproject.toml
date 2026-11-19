@@ -1,0 +1,60 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "cpsa"
+version = "0.1.0"
+description = "YOLOX-nano 'Cosa vede l'IA' showcase on the Kria KV260: camera, DPU, live dashboard."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+dependencies = [
+    "aiohttp>=3.9",
+    "linuxpy>=0.25",
+    "numpy",
+    "opencv-python-headless",
+    "pyyaml",
+]
+
+[project.optional-dependencies]
+dev = [
+    "jsonschema>=4.20",
+    "mypy",
+    "pytest",
+    "ruff",
+]
+
+[project.scripts]
+cpsa-showcase = "cpsa.__main__:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/cpsa"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "target: requires aarch64/KV260 and the Vitis AI runtime",
+    "benchmark: wall-clock speed check; noisy on a loaded host, run on demand with -m benchmark",
+]
+addopts = "-m 'not target and not benchmark'"
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "SIM"]
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+
+[[tool.mypy.overrides]]
+module = [
+    "aiohttp", "aiohttp.*",
+    "linuxpy", "linuxpy.*",
+    "vart", "xir",
+    "yaml",
+]
+ignore_missing_imports = true

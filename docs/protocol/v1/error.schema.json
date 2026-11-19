@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "error.schema.json",
+  "title": "error data (server to client)",
+  "type": "object",
+  "properties": {
+    "code": {
+      "enum": [
+        "model_missing",
+        "dpu_error",
+        "camera_missing",
+        "camera_error",
+        "bad_command",
+        "internal"
+      ]
+    },
+    "message": {
+      "type": "string"
+    },
+    "ref_seq": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 1
+    }
+  },
+  "required": [
+    "code",
+    "message"
+  ],
+  "additionalProperties": true
+}
